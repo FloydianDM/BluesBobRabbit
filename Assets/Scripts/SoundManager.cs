@@ -25,8 +25,6 @@ public class SoundManager : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void PlaySoundServerRpc(SoundType soundType)
     {
-        Debug.Log("PlaySoundServerRpc");
-        
         switch (soundType)
         {
             case SoundType.TauntSound:
@@ -39,7 +37,5 @@ public class SoundManager : NetworkBehaviour
     private void PlayTauntSoundEveryoneRpc()
     {
         _audioSource.PlayOneShot(_tauntAudioClip);
-        
-        Debug.Log("PlaySoundEveryoneRpc");
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -123,12 +124,12 @@ public class PlayerControl : NetworkBehaviour
 
     private void PerformJump()
     {
-        _rigidbody.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
+        _rigidbody.AddForce(Vector2.up * 20f, ForceMode2D.Impulse);
     }
 
     private void PerformLand()
     {
-        _rigidbody.AddForce(Vector2.down * 10f, ForceMode2D.Impulse);
+        _rigidbody.AddForce(Vector2.down * 30f, ForceMode2D.Impulse);
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -136,6 +137,25 @@ public class PlayerControl : NetworkBehaviour
         if (other.CompareTag("Ground"))
         {
             _isGrounded = true;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("DeathPool"))
+        {
+            if (IsHost)
+            {
+                GameManager.Instance.ChangeHostScoreServerRpc();
+            }
+            else
+            {
+                GameManager.Instance.ChangeClientScoreServerRpc();
+            }
+            
+            ulong playerId = NetworkManager.Singleton.LocalClientId;
+                
+            StaticEventHandler.CallPlayerDeathEvent(playerId);
         }
     }
 }
