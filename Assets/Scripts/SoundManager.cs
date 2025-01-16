@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class SoundManager : NetworkBehaviour
 {
+    [SerializeField] private AudioClip _tauntAudioClip;
+    
     public static SoundManager Instance;
     private AudioSource _audioSource;
-    private AudioClip _audioClip;
     
     private void Awake()
     {
@@ -20,26 +21,25 @@ public class SoundManager : NetworkBehaviour
         
         _audioSource = GetComponent<AudioSource>();
     }
-
-    public void PlaySound(AudioClip clip)
-    {
-        _audioClip = clip;
-        
-        PlaySoundServerRpc();
-    }
-
+    
     [Rpc(SendTo.Server)]
-    private void PlaySoundServerRpc()
+    public void PlaySoundServerRpc(SoundType soundType)
     {
         Debug.Log("PlaySoundServerRpc");
-            
-        PlaySoundEveryoneRpc();
+        
+        switch (soundType)
+        {
+            case SoundType.TauntSound:
+                PlayTauntSoundEveryoneRpc();
+                break;
+        }
     }
-    
+
     [Rpc(SendTo.Everyone)]
-    private void PlaySoundEveryoneRpc()
+    private void PlayTauntSoundEveryoneRpc()
     {
-        _audioSource.PlayOneShot(_audioClip);
+        _audioSource.PlayOneShot(_tauntAudioClip);
+        
         Debug.Log("PlaySoundEveryoneRpc");
     }
 }

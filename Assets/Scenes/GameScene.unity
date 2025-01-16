@@ -1085,6 +1085,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 87338315692559453, guid: 55cf131a5fa67bb48ad1d99c3e10fd18, type: 3}
+      propertyPath: _tauntAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 891d1cecb240689409fd5ef8a69303ca, type: 3}
     - target: {fileID: 1328607118102067733, guid: 55cf131a5fa67bb48ad1d99c3e10fd18, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
