@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8710824462810344554}
   - component: {fileID: 8941100015372568403}
   - component: {fileID: 3941031027375154938}
+  - component: {fileID: 6810540495725471038}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -216,6 +217,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6810540495725471038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517746511871957194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3609b6d4102e549bfb177c14aed055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tauntAudioClip: {fileID: 8300000, guid: 891d1cecb240689409fd5ef8a69303ca, type: 3}
 --- !u!1 &3890010275627122869
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2242472719
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2498999249
+  InScenePlacedSourceGlobalObjectIdHash: 1158814226
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -73,8 +73,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _spawnPoints:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   _pickupPrefabs:
   - {fileID: 677699128916256983, guid: 7c75ff1c9a730d64eba15d95cb13d98c, type: 3}
+  _pickupPocket: {fileID: 0}
   _pickupSpawnTimer: 5
+  _maxPickupCountInScene: 1

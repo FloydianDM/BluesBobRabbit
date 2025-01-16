@@ -17,28 +17,41 @@ public class PickupManager : NetworkBehaviour
     
     public override void OnNetworkSpawn()
     {
+        StaticEventHandler.OnPickupPicked += StaticEventHandler_OnPickupPicked;
+        
         if (IsHost)
         {
-            StaticEventHandler.OnPickupPicked += StaticEventHandler_OnPickupPicked;
-            
             StartCoroutine(SpawnPickupRoutine());
         }
     }
 
     public override void OnNetworkDespawn()
     {
+        StaticEventHandler.OnPickupPicked -= StaticEventHandler_OnPickupPicked;
+        
         if (IsHost)
         {
-            StaticEventHandler.OnPickupPicked -= StaticEventHandler_OnPickupPicked;
-            
             StopAllCoroutines();
         }
     }
     
     private void StaticEventHandler_OnPickupPicked(PickupPickedEventArgs obj)
     {
-        Debug.Log("PICKED");
-        
+        if (IsHost)
+        {
+            Debug.Log(" HOST PICKED");
+            _currentPickupCount--;
+        }
+        else
+        {
+            Debug.Log("CLIENT PICKED");
+            ReduceCountServerRpc();
+        }
+    }
+    
+    [Rpc(SendTo.Server)]
+    private void ReduceCountServerRpc()
+    {
         _currentPickupCount--;
     }
 
