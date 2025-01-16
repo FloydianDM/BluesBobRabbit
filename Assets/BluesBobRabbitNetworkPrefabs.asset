@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: BluesBobRabbitNetworkPrefabs
   m_EditorClassIdentifier: 
   IsDefault: 0
-  List: []
+  List:
+  - Override: 0
+    Prefab: {fileID: 677699128916256983, guid: 7c75ff1c9a730d64eba15d95cb13d98c, type: 3}
+    SourcePrefabToOverride: {fileID: 0}
+    SourceHashToOverride: 0
+    OverridingTargetPrefab: {fileID: 0}

@@ -4,12 +4,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    private float _speed = 5f;
+    [SerializeField] private float _speed = 5f;
+    
     private Rigidbody2D _rigidbody;
     private BluesBobRabbitInput _inputActions;
     private InputAction _move;
     private InputAction _jump;
-    private Vector2 _previousMovementInput;
+    private Vector2 _recentMovementInput;
     private bool _isGrounded;
 
     private void Awake()
@@ -23,46 +24,58 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsOwner)
+        if (!IsOwner)
         {
-            _inputActions.Enable();
-            _move.performed += OnMovePerformed;
-            _jump.performed += OnJumpPerformed;
-            _move.canceled += OnMoveCanceled;
-            _jump.canceled += OnJumpCanceled;
+            return;
         }
+        
+        _inputActions.Enable();
+        _move.performed += OnMovePerformed;
+        _jump.performed += OnJumpPerformed;
+        _move.canceled += OnMoveCanceled;
+        _jump.canceled += OnJumpCanceled;
+        StaticEventHandler.OnPickupPicked += StaticEventHandler_OnPickupPicked;
     }
-    
+
+
     public override void OnNetworkDespawn()
     {
-        if (IsOwner)
+        if (!IsOwner)
         {
-            _inputActions.Disable();
-            _move.performed -= OnMovePerformed;
-            _jump.performed -= OnJumpPerformed;
-            _move.canceled -= OnMoveCanceled;
-            _jump.canceled -= OnJumpCanceled;
+            return;
         }
+
+        _inputActions.Disable();
+        _move.performed -= OnMovePerformed;
+        _jump.performed -= OnJumpPerformed;
+        _move.canceled -= OnMoveCanceled;
+        _jump.canceled -= OnJumpCanceled;
+        StaticEventHandler.OnPickupPicked -= StaticEventHandler_OnPickupPicked;
     }
 
     private void FixedUpdate()
     {
         if (IsOwner)
         {
-            MovePlayer(_previousMovementInput);
+            MovePlayer(_recentMovementInput);
         }
+    }
+    
+    private void StaticEventHandler_OnPickupPicked(PickupPickedEventArgs obj)
+    {
+        Debug.Log("Picked up");
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
-        _previousMovementInput = context.ReadValue<Vector2>();
-        _previousMovementInput.y = 0;
-        _previousMovementInput = _previousMovementInput.normalized * _speed;
+        _recentMovementInput = context.ReadValue<Vector2>();
+        _recentMovementInput.y = 0;
+        _recentMovementInput = _recentMovementInput.normalized * _speed;
     }
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
-        _previousMovementInput = Vector2.zero;
+        _recentMovementInput = Vector2.zero;
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext context)
@@ -75,6 +88,7 @@ public class PlayerMovement : NetworkBehaviour
         if (context.started)
         {
             _isGrounded = false;
+            
             return;
         }
 
