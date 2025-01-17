@@ -95,7 +95,6 @@ public class PlayerControl : NetworkBehaviour
         {
             case PickupType.SpeedPickup:
                 // add speed for player
-                Debug.Log("Picked up Power");
                 _speedHandler.AddSpeed();
 
                 if (IsHost)
