@@ -1,13 +1,14 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject _joinMenuUI;
-    [SerializeField] private GameObject _deathUI;
+    [SerializeField] private GameObject _scoreUI;
 
     public static UIManager Instance;
-    public DeathUI DeathUI { private set; get; }
+    public ScoreUI ScoreUI { private set; get; }
     
     private void Awake()
     {
@@ -20,14 +21,14 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        DeathUI = _deathUI.GetComponent<DeathUI>();
+        ScoreUI = _scoreUI.GetComponent<ScoreUI>();
         _joinMenuUI.SetActive(true);
-        _deathUI.SetActive(false);
+        _scoreUI.SetActive(false);
     }
 
     public void DisableJoinMenu()
     {
         _joinMenuUI.SetActive(false);
-        _deathUI.SetActive(true);
+        _scoreUI.SetActive(true);
     }
 }

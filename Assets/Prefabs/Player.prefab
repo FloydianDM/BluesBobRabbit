@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8941100015372568403}
   - component: {fileID: 3941031027375154938}
   - component: {fileID: 6810540495725471038}
+  - component: {fileID: 7568477408012490779}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -33,7 +34,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 378309874284443704}
@@ -143,7 +144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  _speed: 5
+  _originalSpeed: 15
+  _modifiedSpeed: 20
 --- !u!50 &8941100015372568403
 Rigidbody2D:
   serializedVersion: 5
@@ -229,7 +231,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3609b6d4102e549bfb177c14aed055, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tauntAudioClip: {fileID: 8300000, guid: 891d1cecb240689409fd5ef8a69303ca, type: 3}
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &7568477408012490779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517746511871957194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b5640fddb82c214a8676fda7b4c4b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  _speedTimer: 10
 --- !u!1 &3890010275627122869
 GameObject:
   m_ObjectHideFlags: 0

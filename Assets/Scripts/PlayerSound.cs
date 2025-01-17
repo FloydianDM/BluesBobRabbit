@@ -1,9 +1,16 @@
-using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerSound : MonoBehaviour
+public class PlayerSound : NetworkBehaviour
 {
     public void SendSound(SoundType soundType)
     {
-        SoundManager.Instance.PlaySoundServerRpc(soundType);
+        if (IsHost)
+        {
+            SoundManager.Instance.PlaySoundServerRpc(soundType, PlayerType.Host);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySoundServerRpc(soundType, PlayerType.Client);
+        }
     }
 }

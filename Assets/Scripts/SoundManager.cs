@@ -1,9 +1,11 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SoundManager : NetworkBehaviour
 {
-    [SerializeField] private AudioClip _tauntAudioClip;
+    [SerializeField] private AudioClip _tauntHostAudioClip;
+    [SerializeField] private AudioClip _tauntClientAudioClip;
     
     public static SoundManager Instance;
     private AudioSource _audioSource;
@@ -23,19 +25,29 @@ public class SoundManager : NetworkBehaviour
     }
     
     [Rpc(SendTo.Server)]
-    public void PlaySoundServerRpc(SoundType soundType)
+    public void PlaySoundServerRpc(SoundType soundType, PlayerType playerType)
     {
         switch (soundType)
         {
             case SoundType.TauntSound:
-                PlayTauntSoundEveryoneRpc();
+                Debug.Log("Sound taunt");
+                PlayTauntSoundEveryoneRpc(playerType);
                 break;
         }
     }
 
     [Rpc(SendTo.Everyone)]
-    private void PlayTauntSoundEveryoneRpc()
+    private void PlayTauntSoundEveryoneRpc(PlayerType playerType)
     {
-        _audioSource.PlayOneShot(_tauntAudioClip);
+        switch (playerType)
+        {
+            case PlayerType.Host:
+                _audioSource.PlayOneShot(_tauntHostAudioClip);
+                break;
+            case PlayerType.Client:
+                _audioSource.PlayOneShot(_tauntClientAudioClip);
+                break;
+        }
+        Debug.Log("Sound taunt");
     }
 }

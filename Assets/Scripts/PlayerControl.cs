@@ -2,17 +2,22 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerControl : NetworkBehaviour
 {
-    [SerializeField] private float _speed = 5f;
-    
+    [SerializeField] private float _originalSpeed = 10f;
+    [SerializeField] private float _modifiedSpeed = 15f;
+
+    private float _speed;
     private Rigidbody2D _rigidbody;
     private PlayerSound _playerSound;
+    private SpeedHandler _speedHandler;
     private BluesBobRabbitInput _inputActions;
     private InputAction _move;
     private InputAction _jump;
     private InputAction _taunt;
+    private InputAction _push;
     private Vector2 _recentMovementInput;
     private bool _isGrounded;
     
@@ -20,11 +25,13 @@ public class PlayerControl : NetworkBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _playerSound = GetComponent<PlayerSound>();
+        _speedHandler = GetComponent<SpeedHandler>();
         
         _inputActions = new BluesBobRabbitInput();
         _jump = _inputActions.FindAction("Jump");
         _move = _inputActions.FindAction("Move");
         _taunt = _inputActions.FindAction("Taunt");
+        _push = _inputActions.FindAction("Push");
     }
 
     public override void OnNetworkSpawn()
@@ -40,6 +47,7 @@ public class PlayerControl : NetworkBehaviour
         _taunt.performed += OnTauntPerformed;
         _move.canceled += OnMoveCanceled;
         _jump.canceled += OnJumpCanceled;
+        
         StaticEventHandler.OnPickupPicked += StaticEventHandler_OnPickupPicked;
     }
     
@@ -56,9 +64,25 @@ public class PlayerControl : NetworkBehaviour
         _taunt.performed -= OnTauntPerformed;
         _move.canceled -= OnMoveCanceled;
         _jump.canceled -= OnJumpCanceled;
+        
         StaticEventHandler.OnPickupPicked -= StaticEventHandler_OnPickupPicked;
     }
 
+    private void Update()
+    {
+        if (IsOwner)
+        {
+            if (_speedHandler.IsAllowSpeedIncrease)
+            {
+                _speed = _modifiedSpeed;
+            }
+            else
+            {
+                _speed = _originalSpeed;
+            }
+        }
+    }
+    
     private void FixedUpdate()
     {
         if (IsOwner)
@@ -71,9 +95,19 @@ public class PlayerControl : NetworkBehaviour
     {
         switch (args.PickupType)
         {
-            case PickupType.PowerPickup:
-                // increase the strength of player
+            case PickupType.SpeedPickup:
+                // add speed for player
                 Debug.Log("Picked up Power");
+                _speedHandler.AddSpeed();
+
+                if (IsHost)
+                {
+                    GameManager.Instance.ChangeHostScoreServerRpc();
+                }
+                else
+                {
+                    GameManager.Instance.ChangeClientScoreServerRpc();
+                }
                 break;
         }
     }
@@ -124,12 +158,12 @@ public class PlayerControl : NetworkBehaviour
 
     private void PerformJump()
     {
-        _rigidbody.AddForce(Vector2.up * 20f, ForceMode2D.Impulse);
+        _rigidbody.AddForceY(20f, ForceMode2D.Impulse);
     }
 
     private void PerformLand()
     {
-        _rigidbody.AddForce(Vector2.down * 30f, ForceMode2D.Impulse);
+        _rigidbody.AddForceY(-30f, ForceMode2D.Impulse);
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -146,11 +180,11 @@ public class PlayerControl : NetworkBehaviour
         {
             if (IsHost)
             {
-                GameManager.Instance.ChangeHostScoreServerRpc();
+                GameManager.Instance.ChangeClientScoreServerRpc();
             }
             else
             {
-                GameManager.Instance.ChangeClientScoreServerRpc();
+                GameManager.Instance.ChangeHostScoreServerRpc();
             }
             
             ulong playerId = NetworkManager.Singleton.LocalClientId;

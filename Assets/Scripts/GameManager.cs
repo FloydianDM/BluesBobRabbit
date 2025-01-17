@@ -23,6 +23,9 @@ public class GameManager : NetworkBehaviour
     
     public override void OnNetworkSpawn()
     {
+        UIManager.Instance.ScoreUI.UpdatePlayer1ScoreCountText(0);
+        UIManager.Instance.ScoreUI.UpdatePlayer2ScoreCountText(0);
+
         _hostScore.OnValueChanged += HostScore_ValueChanged;
         _clientScore.OnValueChanged += ClientScore_ValueChanged;
     }
@@ -30,18 +33,19 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         StaticEventHandler.OnPlayerDeath -= StaticEventHandler_OnPlayerDeath;
+        
         _hostScore.OnValueChanged -= HostScore_ValueChanged;
         _clientScore.OnValueChanged -= ClientScore_ValueChanged;
     }
 
     private void HostScore_ValueChanged(int previousValue, int newValue)
     {
-        UIManager.Instance.DeathUI.UpdatePlayer1DeathCountText(newValue);
+        UIManager.Instance.ScoreUI.UpdatePlayer1ScoreCountText(newValue);
     }
 
     private void ClientScore_ValueChanged(int previousValue, int newValue)
     {
-        UIManager.Instance.DeathUI.UpdatePlayer2DeathCountText(newValue);
+        UIManager.Instance.ScoreUI.UpdatePlayer2ScoreCountText(newValue);
     }
     
     private void StaticEventHandler_OnPlayerDeath(PlayerDeathEventArgs args)
@@ -54,23 +58,11 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void ChangeClientScoreServerRpc()
     {
-        ChangeClientScoreEveryoneRpc();
-    }
-    
-    [Rpc(SendTo.Everyone)]
-    private void ChangeClientScoreEveryoneRpc()
-    {
         _clientScore.Value++;
     }
     
     [Rpc(SendTo.Server)]
     public void ChangeHostScoreServerRpc()
-    {
-        ChangeHostScoreEveryoneRpc();
-    }
-    
-    [Rpc(SendTo.Everyone)]
-    private void ChangeHostScoreEveryoneRpc()
     {
         _hostScore.Value++;
     }

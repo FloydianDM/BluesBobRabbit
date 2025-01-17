@@ -39,12 +39,10 @@ public class PickupManager : NetworkBehaviour
     {
         if (IsHost)
         {
-            Debug.Log(" HOST PICKED");
             _currentPickupCount--;
         }
         else
         {
-            Debug.Log("CLIENT PICKED");
             ReduceCountServerRpc();
         }
     }

@@ -2,10 +2,16 @@ using UnityEngine;
 
 public enum PickupType
 {
-    PowerPickup
+    SpeedPickup
 }
 
 public enum SoundType
 {
     TauntSound
+}
+
+public enum PlayerType
+{
+    Host,
+    Client,
 }

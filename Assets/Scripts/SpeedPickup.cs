@@ -1,13 +1,13 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class PowerPickup : Pickup
+public class SpeedPickup : Pickup
 {
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            StaticEventHandler.CallPickupPickedEvent(PickupType.PowerPickup);
+            StaticEventHandler.CallPickupPickedEvent(PickupType.SpeedPickup);
 
             if (IsClient)
             {
