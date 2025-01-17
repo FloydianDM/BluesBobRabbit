@@ -6,8 +6,8 @@ using UnityEngine.Serialization;
 
 public class PlayerControl : NetworkBehaviour
 {
-    [SerializeField] private float _originalSpeed = 10f;
-    [SerializeField] private float _modifiedSpeed = 15f;
+    [SerializeField] private float _originalSpeed = 15f;
+    [SerializeField] private float _modifiedSpeed = 20f;
 
     private float _speed;
     private Rigidbody2D _rigidbody;
@@ -17,7 +17,6 @@ public class PlayerControl : NetworkBehaviour
     private InputAction _move;
     private InputAction _jump;
     private InputAction _taunt;
-    private InputAction _push;
     private Vector2 _recentMovementInput;
     private bool _isGrounded;
     
@@ -31,7 +30,6 @@ public class PlayerControl : NetworkBehaviour
         _jump = _inputActions.FindAction("Jump");
         _move = _inputActions.FindAction("Move");
         _taunt = _inputActions.FindAction("Taunt");
-        _push = _inputActions.FindAction("Push");
     }
 
     public override void OnNetworkSpawn()

@@ -11,7 +11,7 @@ public class PickupManager : NetworkBehaviour
     
     [Space(5)] [Header ("SETTINGS")]
     [SerializeField] private float _pickupSpawnTimer = 5f;
-    [SerializeField] private int _maxPickupCountInScene = 3;
+    [SerializeField] private int _maxPickupCountInScene = 1;
     
     private int _currentPickupCount = 0;
     

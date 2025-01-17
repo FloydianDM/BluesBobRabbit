@@ -30,7 +30,6 @@ public class SoundManager : NetworkBehaviour
         switch (soundType)
         {
             case SoundType.TauntSound:
-                Debug.Log("Sound taunt");
                 PlayTauntSoundEveryoneRpc(playerType);
                 break;
         }
@@ -48,6 +47,5 @@ public class SoundManager : NetworkBehaviour
                 _audioSource.PlayOneShot(_tauntClientAudioClip);
                 break;
         }
-        Debug.Log("Sound taunt");
     }
 }
